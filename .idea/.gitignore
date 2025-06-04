@@ -1,0 +1,52 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+# IDE-specific files
+.idea/                 # IntelliJ IDEA project files
+*.iml                  # IntelliJ IDEA module files (like tiendaonline.iml)
+.vscode/               # VS Code project files (if team members use it)
+.DS_Store              # macOS specific files
+Thumbs.db              # Windows specific files
+*.log                  # Log files
+*.swp                  # Vim swap files
+*~                     # Backup files created by some editors
+
+# Build artifacts (common for Java projects)
+/target/               # Maven build directory
+/build/                # Gradle build directory
+*.jar                  # Compiled Java archives
+*.war                  # Web application archives
+*.ear                  # Enterprise application archives
+*.class                # Compiled Java class files
+
+# Temporary files and caches
+/temp/
+/tmp/
+.gradle/               # Gradle caches
+.m2/repository/        # Local Maven repository cache (though usually outside project)
+.classpath             # Eclipse .classpath file
+.project               # Eclipse .project file
+.settings/             # Eclipse .settings folder
+
+# Editor-based HTTP Client requests
+/httpRequests/
+
+# Environment-dependent path to Maven home directory
+/mavenHomeManager.xml
+
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+# If you use Node.js/NPM (even for frontend)
+/node_modules/
+npm-debug.log*
+yarn-debug.log*
+.npm/
+
+# If you use Python
+__pycache__/
+*.pyc
+
+# If you use other languages/frameworks, add their specific build/cache directories here
