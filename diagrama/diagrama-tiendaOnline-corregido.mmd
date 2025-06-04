@@ -1,0 +1,56 @@
+classDiagram
+    class Cliente {
+        +String nombre
+        +String email
+        +String direccion
+        +String telefono
+        +registrar()
+        +iniciarSesion()
+    }
+
+    class Producto {
+        +String nombre
+        +String descripcion
+        +double precio
+        +int stock
+        +agregarAlCarrito()
+    }
+
+    class Carrito {
+        +List~Producto~ productos
+        +double total
+        +agregarProducto(Producto)
+        +eliminarProducto(Producto)
+    }
+
+    class Pedido {
+        - int id
+        - EstadoPedido estado
+        - Cliente cliente
+        - List<Producto> productos
+        - ICalculadoraDescuento calculadoraDescuento
+        + Pedido(int id, Cliente cliente, List<Producto> productos)
+        + float calcularTotal()
+        + float aplicarDescuento()
+        + void setCalculadoraDescuento(ICalculadoraDescuento calculadora)
+        + void cambiarEstado(EstadoPedido nuevo)
+        + EstadoPedido getEstado()
+        + int getId()
+        + Cliente getCliente()
+        + void setCliente(Cliente cliente)
+        + List<Producto> getProductos()
+        + void setProductos(List<Producto> productos)
+        + ICalculadoraDescuento getCalculadoraDescuento()
+    }
+
+    class Pago {
+        +double monto
+        +String metodoPago
+        +procesarPago()
+    }
+
+    Cliente --> Carrito : "contiene"
+    Carrito --> Producto : "incluye"
+    Pedido --> Cliente : "pertenece a"
+    Pedido --> Producto : "contiene"
+    Pago --> Pedido : "asocia a"
