@@ -1,56 +1,113 @@
 classDiagram
+    %% Clase principal
+    class Main {
+        +main(String[] args): void
+    }
+
+    %% Cliente y TipoCliente
     class Cliente {
-        +String nombre
-        +String email
-        +String direccion
-        +String telefono
-        +registrar()
-        +iniciarSesion()
+        -String nombre
+        -String email
+        -String direccion
+        -TipoCliente tipo
+        +Cliente(String, String, String, TipoCliente)
     }
 
+    class TipoCliente {
+        <<enumeration>>
+        NUEVO
+        FRECUENTE
+        VIP
+    }
+
+    %% Producto y ProductoRepository
     class Producto {
-        +String nombre
-        +String descripcion
-        +double precio
-        +int stock
-        +agregarAlCarrito()
+        -String codigo
+        -String nombre
+        -double precio
+        +Producto(String, String, double)
+        +getCodigo(): String
+        +getNombre(): String
+        +getPrecio(): double
     }
 
-    class Carrito {
-        +List~Producto~ productos
-        +double total
-        +agregarProducto(Producto)
-        +eliminarProducto(Producto)
+    class ProductoRepository {
+        -Map~String, Producto~ productos
+        +ProductoRepository()
+        +buscarPorCodigo(String): Producto
     }
 
+    %% Pedido y sus derivados
     class Pedido {
-        - int id
-        - EstadoPedido estado
-        - Cliente cliente
-        - List<Producto> productos
-        - ICalculadoraDescuento calculadoraDescuento
-        + Pedido(int id, Cliente cliente, List<Producto> productos)
-        + float calcularTotal()
-        + float aplicarDescuento()
-        + void setCalculadoraDescuento(ICalculadoraDescuento calculadora)
-        + void cambiarEstado(EstadoPedido nuevo)
-        + EstadoPedido getEstado()
-        + int getId()
-        + Cliente getCliente()
-        + void setCliente(Cliente cliente)
-        + List<Producto> getProductos()
-        + void setProductos(List<Producto> productos)
-        + ICalculadoraDescuento getCalculadoraDescuento()
+        -Cliente cliente
+        -List~ItemPedido~ items
+        +Pedido(Cliente)
+        +agregarItem(ItemPedido): void
+        +calcularTotal(): double
+        +cambiarEstado(EstadoPedido): void
     }
 
-    class Pago {
-        +double monto
-        +String metodoPago
-        +procesarPago()
+    class PedidoExpres {
+        +PedidoExpres(Cliente)
+        +cambiarEstado(EstadoPedido): void
     }
 
-    Cliente --> Carrito : "contiene"
-    Carrito --> Producto : "incluye"
-    Pedido --> Cliente : "pertenece a"
-    Pedido --> Producto : "contiene"
-    Pago --> Pedido : "asocia a"
+    class ItemPedido {
+        -Producto producto
+        -int cantidad
+        +ItemPedido(Producto, int)
+        +getProducto(): Producto
+        +getCantidad(): int
+    }
+
+    class EstadoPedido {
+        <<enumeration>>
+        PENDIENTE
+        PAGADO
+        EN_PREPARACION
+        ENVIADO
+        ENTREGADO
+        CANCELADO
+    }
+
+    %% Pago y PagoFactory
+    class MetodoPago {
+        <<interface>>
+        +procesarPago(double): void
+    }
+
+    class PagoFactory {
+        +obtenerMetodo(String): MetodoPago
+    }
+
+    %% Factura
+    class Factura {
+        -Pedido pedido
+        -double total
+        +Factura(Pedido, double)
+        +imprimir(Pedido): void
+    }
+
+    %% Descuento
+    class DescuentoCliente {
+        +calcularDescuento(Pedido): double
+    }
+
+    class DescuentoClienteFactory {
+        +obtenerDescuento(TipoCliente): DescuentoCliente
+    }
+
+    %% Relaciones
+    Main --> Cliente : usa
+    Main --> ProductoRepository : usa
+    Main --> PedidoExpres : usa
+    Main --> Factura : usa
+    Main --> MetodoPago : usa
+    Pedido --> Cliente : tiene
+    Pedido --> ItemPedido : tiene
+    PedidoExpres --> Pedido : hereda
+    ItemPedido --> Producto : tiene
+    Factura --> Pedido : tiene
+    PagoFactory --> MetodoPago : crea
+    ProductoRepository --> Producto : gestiona
+    DescuentoClienteFactory --> DescuentoCliente : crea
